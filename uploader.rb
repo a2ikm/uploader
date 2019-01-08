@@ -1,5 +1,6 @@
 require "bundler/inline"
 require "fileutils"
+require "optparse"
 
 gemfile do
   source "https://rubygems.org"
@@ -7,8 +8,18 @@ gemfile do
   gem "sinatra-flash", require: "sinatra/flash"
 end
 
-class App < Sinatra::Base
+options = {}
+
+OptionParser.new do |op|
+  op.on "-p", "--port NUMBER", Integer do |v|
+    options[:port] = v
+  end
+end.parse!(ARGV)
+
+Class.new(Sinatra::Base) do
   TEMPLATE = DATA.read
+
+  set :port, options[:port] if options[:port]
 
   enable :sessions
   register Sinatra::Flash
@@ -31,9 +42,7 @@ class App < Sinatra::Base
     flash[:notice] = "Uploaded to #{path}"
     redirect "/"
   end
-end
-
-App.run!
+end.run!
 
 __END__
 <!DOCTYPE html>
