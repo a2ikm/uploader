@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require "bundler/inline"
 require "fileutils"
 require "optparse"
