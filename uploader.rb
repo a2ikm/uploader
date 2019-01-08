@@ -14,10 +14,17 @@ OptionParser.new do |op|
   op.on "-p", "--port NUMBER", Integer do |v|
     options[:port] = v
   end
+  op.on "-u", "--upload DIRECTORY" do |v|
+    options[:upload] = v
+  end
 end.parse!(ARGV)
 
 Class.new(Sinatra::Base) do
   TEMPLATE = DATA.read
+
+  UPLOAD = File.expand_path(options[:upload] || "upload")
+  FileUtils.mkdir_p(UPLOAD)
+  $stderr.puts "== Upload folder: #{UPLOAD}"
 
   set :port, options[:port] if options[:port]
 
@@ -28,13 +35,11 @@ Class.new(Sinatra::Base) do
     erb TEMPLATE
   end
 
-  FileUtils.mkdir_p(public_folder)
-
   post "/upload" do
     name = params[:file][:filename]
     file = params[:file][:tempfile]
 
-    path = File.join(self.class.public_folder, name)
+    path = File.join(UPLOAD, name)
     File.open(path, "wb") do |f|
       f.write(file.read)
     end
