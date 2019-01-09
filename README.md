@@ -15,7 +15,7 @@ $ ruby uploader.rb
 Or curl and execute it.
 
 ```console
-$ curl -sL https://raw.githubusercontent.com/a2ikm/uploader/master/uploader.rb | ruby -
+$ curl -sL https://git.io/uploaderrb | ruby -
 ```
 
 Then, open http://localhost:4567 and upload a file.
