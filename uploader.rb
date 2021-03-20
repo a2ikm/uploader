@@ -8,6 +8,7 @@ gemfile do
   source "https://rubygems.org"
   gem "sinatra", require: "sinatra/base"
   gem "sinatra-flash", require: "sinatra/flash"
+  gem "webrick"
 end
 
 options = {}
