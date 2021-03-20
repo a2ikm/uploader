@@ -3,6 +3,7 @@
 require "bundler/inline"
 require "fileutils"
 require "optparse"
+require "securerandom"
 
 gemfile do
   source "https://rubygems.org"
@@ -39,7 +40,7 @@ Class.new(Sinatra::Base) do
   end
 
   post "/upload" do
-    name = params[:file][:filename]
+    name = "%s%s" % [SecureRandom.uuid, File.extname(params[:file][:filename])]
     file = params[:file][:tempfile]
 
     path = File.join(UPLOAD, name)
